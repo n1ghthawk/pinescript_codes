@@ -1,13 +1,13 @@
 //@version=5
 indicator("Dividend Cumulative", max_bars_back = 4000)
 
+var adjusted_div = array.new<float>()
+
 dividends = nz(request.dividends(syminfo.tickerid),0)
 denominator = request.splits(syminfo.tickerid,splits.denominator)
 numerator = request.splits(syminfo.tickerid,splits.numerator)
 
-var adjusted_div = array.new<float>()
 array.push(adjusted_div,dividends)
-plot(array.size(adjusted_div), color=color.yellow)
 if ta.change(numerator) or ta.change(denominator)
     for i = 0 to array.size(adjusted_div)-1
         val = array.get(adjusted_div, i)/numerator*denominator
